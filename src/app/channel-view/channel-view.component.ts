@@ -85,17 +85,20 @@ export class ChannelViewComponent implements OnInit {
       this.closeDialog()
   }
   
-  
-    updateChannel(){
-      const currentUserIndex = this.currentChannel.members.findIndex(member => member.id === this.currentUser.id)
-    this.currentChannel.members.splice(currentUserIndex, 1);
-    this.firestore
-      .collection('channels')
-      .doc(this.data.channelId)
-      .update({
-        members: this.currentChannel.members
-      })
+  updateChannel(){
+    if (this.currentChannel && this.currentChannel.members) {
+      const currentUserIndex = this.currentChannel.members.findIndex(member => member.id === this.currentUser.id);
+      if (currentUserIndex !== -1) {
+        this.currentChannel.members.splice(currentUserIndex, 1);
+        this.firestore
+          .collection('channels')
+          .doc(this.data.channelId)
+          .update({
+            members: this.currentChannel.members
+          });
+      }
     }
+  }
   
   updateLastChannelByUser(){
     this.firestore
@@ -104,7 +107,6 @@ export class ChannelViewComponent implements OnInit {
     .update({
       lastChannel: 'NUhNN20heEUcN7gnJuZM'
     })
-    
   }
 
   loadCurrentUser() {
@@ -114,9 +116,6 @@ export class ChannelViewComponent implements OnInit {
       .valueChanges({ idField: 'id' })
       .subscribe((user) => {
         this.currentUser = user
-
       });
   }
-
-
 }

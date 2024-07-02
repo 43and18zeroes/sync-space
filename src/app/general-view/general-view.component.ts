@@ -130,19 +130,21 @@ export class GeneralViewComponent implements OnInit {
   }
 
   addUserToChannel() {
-    const currentUserId = this.dataService.currentUser.id;
-    const userIndex = this.firstChannel.members.findIndex(user => user.id === currentUserId);
-    if (userIndex !== -1) {
-      // Der Benutzer ist bereits im Array vorhanden
-    } else {
-      // Der Benutzer ist nicht im Array
-      this.firstChannel.members.push(this.dataService.currentUser);
-      this.firestore
-        .collection('channels')
-        .doc('NUhNN20heEUcN7gnJuZM')
-        .update({
-          members: this.firstChannel.members,
-        })
+    if (this.firstChannel && this.firstChannel.members) {
+      const currentUserId = this.dataService.currentUser.id;
+      const userIndex = this.firstChannel.members.findIndex(user => user.id === currentUserId);
+      if (userIndex !== -1) {
+        // Der Benutzer ist bereits im Array vorhanden
+      } else {
+        // Der Benutzer ist nicht im Array
+        this.firstChannel.members.push(this.dataService.currentUser);
+        this.firestore
+          .collection('channels')
+          .doc('NUhNN20heEUcN7gnJuZM')
+          .update({
+            members: this.firstChannel.members,
+          })
+      }
     }
   }
 

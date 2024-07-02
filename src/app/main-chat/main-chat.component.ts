@@ -15,7 +15,8 @@ export class MainChatComponent implements OnInit, AfterViewChecked {
   @ViewChild('scrollMe') private myScrollContainer: ElementRef;
   updateMembers = [];
   currentChannel;
-  currentUser
+  currentUser;
+
   constructor(
     public dataService: DataService,
     public Dialog: MatDialog,
@@ -23,7 +24,7 @@ export class MainChatComponent implements OnInit, AfterViewChecked {
   ) { }
 
   ngOnInit(): void {
-    this.loadCurrentUser()
+    this.loadCurrentUser();
     this.scrollToBottom();
   }
 
@@ -35,7 +36,7 @@ export class MainChatComponent implements OnInit, AfterViewChecked {
     this.Dialog.open(ChannelViewComponent, {
       data: { channelId },
       panelClass: 'channel__view__matdialog'
-    })
+    });
   }
 
   scrollToBottom(): void {
@@ -51,8 +52,8 @@ export class MainChatComponent implements OnInit, AfterViewChecked {
       .valueChanges({ idField: 'id' })
       .subscribe((user) => {
         this.currentUser = user;
-        this.loadLastChannel()
-      })
+        this.loadLastChannel();
+      });
   }
 
   loadLastChannel() {
@@ -61,51 +62,41 @@ export class MainChatComponent implements OnInit, AfterViewChecked {
       .doc(this.currentUser.lastChannel)
       .valueChanges({ idField: 'id' })
       .subscribe((channel) => {
-        this.currentChannel = channel
-        this.getCurrentInfoOfTheUsers()
-      })
+        this.currentChannel = channel;
+        if (this.currentChannel.members && this.currentChannel.members.length > 0) {
+          this.getCurrentInfoOfTheUsers();
+        }
+      });
   }
-  
- get limitedMembers(): any[] {
-    
+
+  get limitedMembers(): any[] {
     const maxCount = 3;
     return this.updateMembers.slice(0, maxCount);
   }
-  
 
-  
   getCurrentInfoOfTheUsers() {
     this.updateMembers = [];
     this.currentChannel.members.forEach(member => {
       this.firestore
         .collection('users')
         .doc(member.id)
-        .valueChanges({idField: 'id'})
+        .valueChanges({ idField: 'id' })
         .subscribe((memberInfo) => {
           // Überprüfe, ob die Informationen bereits in der Liste sind
           const index = this.updateMembers.findIndex(existingMember => existingMember.id === memberInfo.id);
-  
+
           if (index === -1) {
             this.updateMembers.push(memberInfo); // Speichere die aktualisierten Informationen
           }
         });
     });
   }
-  
-  
-  openDialogMembersView(members, test) {
-    const channelId = this.currentUser.lastChannel
-    this.Dialog.open(MembersViewComponent,
-      {
-        data: { members, channelId, test},
-        panelClass: 'members__view__matdialog'
-      })
-  }
 
-  // scrollDownAfterPageLoad() {
-  //   document.addEventListener('DOMContentLoaded', function () {
-  //     let mainChatBody = document.getElementById("mainChatBody");
-  //     mainChatBody.scrollTop = mainChatBody.scrollHeight;
-  //   }, false);
-  // }
+  openDialogMembersView(members, test) {
+    const channelId = this.currentUser.lastChannel;
+    this.Dialog.open(MembersViewComponent, {
+      data: { members, channelId, test },
+      panelClass: 'members__view__matdialog'
+    });
+  }
 }

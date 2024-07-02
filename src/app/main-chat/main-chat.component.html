@@ -1,36 +1,57 @@
 <div *ngIf="this.currentChannel" class="main__chat__container noSelect">
-
-    <div class="main__chat__header">
-
-        <div (click)="openDialogChannelView(this.currentChannel.id)" class="main__chat__header__left">
-            <div class="material-symbols-rounded">tag</div>
-            <div class="channel__title">{{this.currentChannel.name}}</div>
-            <div class="material-symbols-rounded noSelect">
-                expand_more
-            </div>
-        </div>
-
-        <div class="main__chat__header__right">
-            <div (click)="openDialogMembersView(this.currentChannel.members, true)" class="header__users hidden__mobile">
-                <div style="opacity:0;" *ngFor="let member of limitedMembers" class="header__users__img">
-                    <img  src="{{member.profileImage}}" alt="">
-                </div>
-                <span class="users__count">{{this.currentChannel.members.length}}</span>
-            </div>
-            <div class="symbol__circle__desktop hidden__mobile">
-                <span (click)="openDialogMembersView(this.currentChannel.members, false)" class="material-symbols-rounded">person_add</span>
-            </div>
-            <div class="symbol__circle__mobile__container hidden__desktop">
-                <div class="symbol__circle__mobile">
-                    <span (click)="openDialogMembersView(this.currentChannel.members, false)" class="material-symbols-rounded">person_add</span>
-                </div>
-            </div>
-        </div>
+  <div class="main__chat__header">
+    <div
+      (click)="openDialogChannelView(this.currentChannel.id)"
+      class="main__chat__header__left"
+    >
+      <div class="material-symbols-rounded">tag</div>
+      <div class="channel__title">{{ this.currentChannel.name }}</div>
+      <div class="material-symbols-rounded noSelect">expand_more</div>
     </div>
 
-    <div class="chat__seperator"></div>
+    <div class="main__chat__header__right">
+      <div
+        (click)="openDialogMembersView(this.currentChannel.members, true)"
+        class="header__users hidden__mobile"
+      >
+        <div
+          style="opacity: 0"
+          *ngFor="let member of limitedMembers"
+          class="header__users__img"
+        >
+          <img src="{{ member.profileImage }}" alt="" />
+        </div>
+        <span class="users__count">{{
+          this.currentChannel?.members?.length || 0
+        }}</span>
+      </div>
+      <div class="symbol__circle__desktop hidden__mobile">
+        <span
+          (click)="openDialogMembersView(this.currentChannel.members, false)"
+          class="material-symbols-rounded"
+          >person_add</span
+        >
+      </div>
+      <div class="symbol__circle__mobile__container hidden__desktop">
+        <div class="symbol__circle__mobile">
+          <span
+            (click)="openDialogMembersView(this.currentChannel.members, false)"
+            class="material-symbols-rounded"
+            >person_add</span
+          >
+        </div>
+      </div>
+    </div>
+  </div>
 
-    <app-main-chat-body [channelName]="this.currentChannel.name" #scrollMe></app-main-chat-body>
+  <div class="chat__seperator"></div>
 
-    <app-main-chat-footer [channelName]="this.currentChannel.name"></app-main-chat-footer>
+  <app-main-chat-body
+    [channelName]="this.currentChannel.name"
+    #scrollMe
+  ></app-main-chat-body>
+
+  <app-main-chat-footer
+    [channelName]="this.currentChannel.name"
+  ></app-main-chat-footer>
 </div>

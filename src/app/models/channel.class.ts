@@ -3,12 +3,14 @@ export class Channel {
     description: string;
     members : string[];
     founder: string[];
+    isOpenToAll: boolean;
 
     constructor(obj: any){
         this.name = obj ? obj.name : '';
         this.description = obj?.description ?? '';
         this.members = obj && obj.members ? obj.members : [];
         this.founder = obj ? obj.founder : [];
+        this.isOpenToAll = false;
     }
 
     public toJSON() {
@@ -17,6 +19,7 @@ export class Channel {
             description: this.description,
             members: this.members,
             founder: this.founder,
+            isOpenToAll: this.isOpenToAll,
         }
     }
 

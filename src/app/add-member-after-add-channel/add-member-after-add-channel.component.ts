@@ -70,6 +70,7 @@ export class AddMemberAfterAddChannelComponent implements OnInit {
       this.data.isOpenToAll = true;
     } // alle user wurde ausgewählt
     else {
+      this.data.members = [this.currentUser];
       this.data.isOpenToAll = false;
     }
     this.addChannelToFirebase();

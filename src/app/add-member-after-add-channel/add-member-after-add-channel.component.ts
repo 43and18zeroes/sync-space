@@ -62,16 +62,29 @@ export class AddMemberAfterAddChannelComponent implements OnInit {
 
 
 
+  // createChannel() {
+  //   this.data.founder = this.currentUser
+  //   if (!this.certainPeople) {
+  //     this.data.members = this.allUsers;
+  //     this.data.isOpenToAll = true;
+  //     this.addChannelToFirebase()
+  //   } // alle user wurde ausgewählz
+  //   else (
+  //     this.addChannelToFirebase()
+  //   )
+  //   this.closeDialog()
+  // }
+
   createChannel() {
     this.data.founder = this.currentUser
     if (!this.certainPeople) {
       this.data.members = this.allUsers;
       this.data.isOpenToAll = true;
-      this.addChannelToFirebase()
     } // alle user wurde ausgewählz
-    else (
-      this.addChannelToFirebase()
-    )
+    else {
+      this.data.isOpenToAll = false;
+    }
+    this.addChannelToFirebase()
     this.closeDialog()
   }
 
